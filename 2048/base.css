@@ -1,0 +1,261 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    display: block;
+    font-size: 50px;
+    margin-top: 10px;
+}
+
+header {
+    width: 600px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+#reset {
+    flex: 1 0 auto;
+    height: 40px;
+    width: 100px;
+    line-height: 40px;
+    text-align: center;
+    color: white;
+    background-color: saddlebrown;
+    border-radius: 3px;
+}
+
+#score {
+    color: white;
+    flex: 3 0 auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#score > * {
+    text-align: center;
+    background-color: saddlebrown;
+    padding: 20px;
+}
+
+#score > div:nth-child(1) {
+    margin-right: 20px;
+}
+
+#container {
+    position: relative;
+    width: 600px;
+    height: 600px;
+}
+
+#game {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-radius: 5px;
+    padding: 4px;
+    background-color: saddlebrown;
+}
+
+#over {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgba(100%, 100%, 100%, 0.7);
+    top: 0;
+    left: 0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#over > div:nth-child(1) {
+    margin-bottom: 20px;
+    font-size: 64px;
+}
+
+#over > div:nth-child(2) {
+    font-size: 20px;
+    background-color: saddlebrown;
+    border-radius: 3px;
+    padding: 10px;
+    color: white;
+}
+
+#won {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgba(100%, 100%, 100%, 0.7);
+    top: 0;
+    left: 0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#won > div:nth-child(1) {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 58px;
+}
+
+#won > div:nth-child(2) {
+    display: flex;
+    justify-content: space-between;
+}
+
+#continue {
+    font-size: 20px;
+    margin: 20px 0;
+    background-color: saddlebrown;
+    border-radius: 3px;
+    padding: 10px;
+    color: white;
+}
+
+#restart {
+    margin: 20px;
+    font-size: 20px;
+    background-color: saddlebrown;
+    border-radius: 3px;
+    padding: 10px;
+    color: white;
+}
+
+.tile {
+    height: 140px;
+    flex: 0 0 140px;
+    background-color: darksalmon;
+    margin: 4px;
+    color: white;
+}
+
+.tile_2,
+.tile_4 {
+    color: black;
+}
+
+.tile_2,
+.tile_4,
+.tile_8,
+.tile_16,
+.tile_32,
+.tile_64 {
+    font-size: 64px;
+}
+
+.tile_128,
+.tile_256,
+.tile_512 {
+    font-size: 60px;
+}
+
+.tile_1024,
+.tile_2048,
+.tile_4096,
+.tile_8192 {
+    font-size: 56px;
+}
+
+.tile_2::before {
+    content: "2";
+    background-color: rgba(100%, 100%, 100%, 0.5);
+}
+
+.tile_4::before {
+    content: "4";
+    background-color: rgba(100%, 100%, 100%, 0.6);
+}
+
+.tile_8::before {
+    content: "8";
+    background-color: rgba(100%, 0%, 0%, 0.2);
+}
+
+.tile_16::before {
+    content: "16";
+    background-color: rgba(100%, 0%, 0%, 0.3);
+}
+
+.tile_32::before {
+    content: "32";
+    background-color: rgba(100%, 0%, 0%, 0.4);
+}
+
+.tile_64::before {
+    content: "64";
+    background-color: rgba(100%, 0%, 0%, 0.5);
+}
+
+.tile_128::before {
+    content: "128";
+    background-color: rgba(100%, 100%, 0%, 0.15);
+}
+
+.tile_256::before {
+    content: "256";
+    background-color: rgba(100%, 100%, 0%, 0.25);
+}
+
+.tile_512::before {
+    content: "512";
+    background-color: rgba(100%, 100%, 0%, 0.35);
+}
+
+.tile_1024::before {
+    content: "1024";
+    background-color: rgba(100%, 100%, 0%, 0.45);
+}
+
+.tile_2048::before {
+    content: "2048";
+    background-color: rgba(100%, 100%, 0%, 0.55);
+}
+
+.tile_4096::before {
+    content: "4096";
+    background-color: rgba(100%, 100%, 0%, 0.65);
+}
+
+.tile_8192::before {
+    content: "8192";
+    background-color: rgba(100%, 100%, 0%, 0.75);
+}
+
+.tile_2::before,
+.tile_4::before,
+.tile_8::before,
+.tile_16::before,
+.tile_32::before,
+.tile_64::before,
+.tile_128::before,
+.tile_256::before,
+.tile_512::before,
+.tile_1024::before,
+.tile_2048::before,
+.tile_4096::before,
+.tile_8192::before {
+    display: block;
+    text-align: center;
+    line-height: 142px;
+}

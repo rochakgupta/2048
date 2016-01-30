@@ -1,0 +1,60 @@
+<html>
+
+<head>
+    <link href="base.css" rel="stylesheet">
+    <script src="2048-new.js" rel="text/stylesheet"></script>
+</head>
+
+<body>
+    <h1>2048</h1>
+    <header>
+        <div id="reset">New Game</div>
+        <div id="score">
+            <div>SCORE
+                <div id="now">0</div>
+            </div>
+            <div>BEST
+                <div id="best">0</div>
+            </div>
+        </div>
+    </header>
+    <main id="container">
+        <main id="game">
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+            <div class="tile"></div>
+        </main>
+        <main id="over">
+            <div>Game Over!</div>
+            <div id="try_again">Try Again</div>
+        </main>
+        <main id="won">
+            <div>Congrats! You Won The Game!</div>
+            <div>
+                <div id="continue">Continue</div>
+                <div id="restart">Restart</div>
+            </div>
+        </main>
+    </main>
+</body>
+<script>
+    function onBodyLoad() {
+        Game.init();
+    }
+    window.addEventListener('load', onBodyLoad);
+</script>
+
+</html>

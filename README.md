@@ -1,2 +1,2 @@
 # 2048
-A web app of the game 2048 that uses local storage
+A web app of the 2048 game that uses local storage

@@ -1,11 +1,13 @@
 var Game = (function () {
-    "use strict"
+    "use strict";
     var mat;
     var score;
     var best = 0;
     var shown2048dialog;
     var overMain;
     var wonMain;
+    var showingOver;
+    var showingWon;
 
     function copyMat(m2) {
         var m1 = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
@@ -256,6 +258,15 @@ var Game = (function () {
         return isSame(prev, mat);
     }
 
+    function setAll() {
+        localStorage.setItem('mat', JSON.stringify(mat));
+        localStorage.setItem('score', score);
+        localStorage.setItem('best', best);
+        localStorage.setItem('shown2048dialog', shown2048dialog);
+        localStorage.setItem('showingOver', showingOver);
+        localStorage.setItem('showingWon', showingWon);
+    }
+
     function redraw() {
         var flag = true;
         var k = 1;
@@ -271,12 +282,14 @@ var Game = (function () {
                 k += 1;
             }
         }
-        var now = document.getElementById('now');
-        now.innerHTML = score + "";
-        var highest = document.getElementById('best');
-        var highest_val = parseInt(highest.innerHTML);
-        if (score > highest_val) {
-            highest.innerHTML = score + "";
+        best = score > best ? score : best;
+        document.getElementById('now').innerHTML = score + "";
+        document.getElementById('best').innerHTML = best + "";
+        setAll();
+        if (showingOver) {
+            showGameOverDialog();
+        } else if (showingWon) {
+            show2048Dialog();
         }
         return flag;
     }
@@ -327,46 +340,55 @@ var Game = (function () {
 
     function showGameOverDialog() {
         overMain.style.display = 'flex';
+        showingOver = true;
+        localStorage.setItem('showingOver', showingOver);
     }
 
     function show2048Dialog() {
         wonMain.style.display = 'flex';
+        showingWon = true;
+        localStorage.setItem('showingWon', showingWon);
+    }
+
+    function move(e) {
+        if (!(showingOver || showingWon)) {
+            e.preventDefault();
+            var res;
+            if (e.keyCode === 37) {
+                res = moveLeft();
+            } else if (e.keyCode === 38) {
+                res = moveUp();
+            } else if (e.keyCode === 39) {
+                res = moveRight();
+            } else if (e.keyCode === 40) {
+                res = moveDown();
+            } else {
+                return;
+            }
+            if (!res) {
+                var coord = getRandomEmptyCell();
+                var value = getRandomValue();
+                mat[coord.x][coord.y] = value;
+                if (redraw()) {
+                    if (isGameOver()) {
+                        showGameOverDialog();
+                    }
+                }
+                if (shown2048dialog === false) {
+                    if (checkIf2048()) {
+                        show2048Dialog();
+                        shown2048dialog = true;
+                        localStorage.setItem('shown2048dialog', shown2048dialog);
+                    }
+                }
+            }
+        }
     }
 
     function goFurther() {
         wonMain.style.display = 'none';
-    }
-
-    function move(e) {
-        e.preventDefault();
-        var res;
-        if (e.keyCode === 37) {
-            res = moveLeft();
-        } else if (e.keyCode === 38) {
-            res = moveUp();
-        } else if (e.keyCode === 39) {
-            res = moveRight();
-        } else if (e.keyCode === 40) {
-            res = moveDown();
-        } else {
-            return;
-        }
-        if (!res) {
-            var coord = getRandomEmptyCell();
-            var value = getRandomValue();
-            mat[coord.x][coord.y] = value;
-            if (redraw()) {
-                if (isGameOver()) {
-                    showGameOverDialog();
-                }
-            }
-            if (shown2048dialog === false) {
-                if (checkIf2048()) {
-                    show2048Dialog();
-                    shown2048dialog = true;
-                }
-            }
-        }
+        showingWon = false;
+        localStorage.setItem('showingWon', showingWon);
     }
 
     function reset(e) {
@@ -378,8 +400,20 @@ var Game = (function () {
         mat = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
         score = 0;
         shown2048dialog = false;
+        showingOver = false;
+        showingWon = false;
         fillOneRandomEmptyCell();
         fillOneRandomEmptyCell();
+        redraw();
+    }
+
+    function extractAll() {
+        mat = JSON.parse(localStorage.getItem('mat'));
+        score = JSON.parse(localStorage.getItem('score'));
+        best = JSON.parse(localStorage.getItem('best'));
+        shown2048dialog = JSON.parse(localStorage.getItem('shown2048dialog'));
+        showingOver = JSON.parse(localStorage.getItem('showingOver'));
+        showingWon = JSON.parse(localStorage.getItem('showingWon'));
         redraw();
     }
 
@@ -387,7 +421,11 @@ var Game = (function () {
     function init() {
         overMain = document.getElementById('over');
         wonMain = document.getElementById('won');
-        reset();
+        if ('mat' in localStorage) {
+            extractAll();
+        } else {
+            reset();
+        }
         document.getElementById('restart').addEventListener('click', reset);
         document.getElementById('reset').addEventListener('click', reset);
         document.getElementById('try_again').addEventListener('click', reset);
